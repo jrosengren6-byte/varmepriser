@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Østjyske varmepriser</title>
+<style>
+:root{--navy:#0b3a7e;--navy2:#062a5e;--orange:#f6ad6e;--orange-bg:#f4d7b8;--sky:#6f9fd0;--sky-l:#b9cde6;--bg:#eaeef3;--ink:#0d1b2e;--muted:#5a6878;--line:#cfd8e3;--card:#fff;--up:#c8553d;--down:#2f7d5b}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.hero{background:var(--navy);color:#fff;padding:22px 16px 30px}
+.wrap{max-width:860px;margin:0 auto}
+.top{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.14em;font-weight:700;text-transform:uppercase}
+.top span:last-child{color:var(--sky-l)}
+.herogrid{display:flex;gap:24px;align-items:center;margin-top:22px}
+.herotext{flex:1;min-width:0}
+h1{font-size:clamp(32px,6vw,46px);line-height:1.05;margin:0 0 14px;font-weight:800;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--orange);display:block}
+.lede{font-size:14px;line-height:1.45;max-width:420px;margin:0 0 14px}
+.pill{display:inline-block;font-size:10px;border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:4px 10px}
+.art{width:220px;flex:none;text-align:center}
+.art small{display:block;font-size:9px;letter-spacing:.14em;color:var(--sky-l);margin-top:6px}
+@media(max-width:620px){.art{display:none}}
+nav{display:flex;gap:4px;padding:18px 0 12px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{border:0;background:none;font:700 13px inherit;font-family:inherit;padding:9px 14px;border-radius:20px;cursor:pointer;color:var(--ink);white-space:nowrap}
+nav button[aria-selected=true]{background:var(--navy);color:#fff}
+main{padding:0 16px 24px}
+.kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin:22px 0 4px}
+h2{font-size:clamp(20px,3.6vw,26px);margin:0 0 6px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.pair{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card.a{border-top:3px solid var(--sky)}
+label.lab{display:block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+select,input[type=search]{width:100%;font:14px inherit;font-family:inherit;padding:8px 10px;border:1px solid #9aa8b8;border-radius:6px;background:#fff;color:var(--ink)}
+.big{font-size:clamp(38px,7vw,52px);font-weight:800;margin:14px 0 0;letter-spacing:-.02em}
+.big span{font-size:14px;margin-left:6px;font-weight:700}
+.meta{font-size:11px;color:var(--muted);margin-top:2px}
+.houserow{display:flex;align-items:flex-end;gap:12px;margin-top:14px;height:56px}
+.houserow svg{flex:none}
+.bartrack{flex:1;height:100%;display:flex;align-items:flex-end}
+.bar{height:22px;border-radius:3px 3px 0 0;transition:width .4s,height .4s}
+.diff{background:var(--orange-bg);border-radius:10px;padding:16px 18px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.diff .l b{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.diff .l{font-size:13px}
+.diff .r{text-align:right}
+.diff .r strong{font-size:26px;font-weight:800;display:block}
+.diff .r span{font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips button{font:12px inherit;font-family:inherit;background:#fff;border:1px solid var(--line);border-radius:16px;padding:6px 12px;cursor:pointer;color:var(--ink)}
+.chips button:hover{border-color:var(--navy)}
+.filters{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:520px){.filters{grid-template-columns:1fr}}
+.list{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.row{display:grid;grid-template-columns:28px minmax(110px,1.1fr) 2fr 84px;gap:10px;align-items:center;padding:8px 12px;border-bottom:1px solid #edf1f5;font-size:13px}
+.row:last-child{border-bottom:0}
+.row .rk{color:var(--muted);font-size:11px;text-align:right}
+.row .nm b{display:block;font-weight:700}
+.row .nm small{color:var(--muted);font-size:11px}
+.row .tr{height:12px;background:#f0f3f7;border-radius:2px;overflow:hidden}
+.row .tr i{display:block;height:100%;background:var(--sky)}
+.row .val{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.row.hl{background:#fff6ec}
+.row.hl .tr i{background:var(--orange)}
+.empty{padding:16px;color:var(--muted);font-size:13px}
+.toggle{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px;margin-bottom:12px}
+.toggle button{border:0;background:none;font:700 12px inherit;font-family:inherit;padding:6px 12px;border-radius:16px;cursor:pointer;color:var(--ink)}
+.toggle button[aria-pressed=true]{background:var(--navy);color:#fff}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.summary div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.summary b{display:block;font-size:22px}
+.summary span{font-size:11px;color:var(--muted)}
+.drow{display:grid;grid-template-columns:minmax(110px,1fr) 2fr 70px;gap:10px;align-items:center;padding:7px 12px;border-bottom:1px solid #edf1f5;font-size:13px}
+.drow .axis{position:relative;height:14px}
+.drow .axis:before{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;border-left:1px solid #9aa8b8}
+.drow .axis i{position:absolute;top:1px;height:12px;border-radius:2px}
+.drow .pct{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.up{color:var(--up)} .down{color:var(--down)}
+footer{font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px;border-top:1px solid var(--line);padding-top:10px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.om{margin-top:22px;border-top:1px solid var(--line);padding-top:12px;font-size:13px;line-height:1.5}
+.om summary{cursor:pointer;font-weight:700}
+.om p{color:var(--muted);max-width:640px}
+.filters3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+@media(max-width:620px){.filters3{grid-template-columns:1fr}}
+.flab{display:block;font-size:11px;font-weight:700;margin-bottom:5px}
+.filters3 select,.filters3 input{padding:10px 12px}
+.listhead{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin:8px 0 4px}
+.frow{display:grid;grid-template-columns:24px minmax(120px,1fr) 2fr 70px;gap:12px;align-items:center;padding:10px 6px;border-bottom:1px solid var(--line);cursor:pointer}
+.frow .rk{font-size:11px;color:var(--muted)}
+.nm b{display:block;font-size:13px}.nm small{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.frow .tr{height:16px;background:#dbe3ec;border-radius:3px;overflow:hidden}
+.frow .tr i{display:block;height:100%;background:var(--navy);border-radius:3px}
+.frow .val{text-align:right;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.frow.on{background:#fff6ec}.frow.on .tr i{background:var(--orange)}
+.legend{display:flex;gap:16px;font-size:10px;margin:8px 0}
+.legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.axislab{text-align:right;font-size:10px;margin-bottom:6px}
+.crow{display:grid;grid-template-columns:minmax(120px,1fr) 1.3fr 90px;gap:12px;align-items:center;padding:9px 6px;border-bottom:1px solid var(--line)}
+.crow .ax{position:relative;height:28px}
+.crow .ax:before{content:"";position:absolute;left:var(--z);top:0;bottom:0;border-left:1px solid #8796a8}
+.crow .ax i{position:absolute;top:6px;height:18px;border-radius:2px}
+.crow .v{text-align:right;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+@media(max-width:620px){.frow{grid-template-columns:20px 1fr 64px}.frow .tr{grid-column:2/4;grid-row:2}.crow{grid-template-columns:1fr 70px}.crow .ax{grid-column:1/3;grid-row:2}}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="top"><span>Østjyske varmepriser</span><span>Januar 2026</span></div>
+  <div class="herogrid">
+    <div class="herotext">
+      <h1>Hvad koster <em>varmen hos dig?</em></h1>
+      <p class="lede">Samme hus. Samme forbrug. Op til <b id="maxdiff"></b> kr. til forskel om året. Find dit varmeværk og gå på opdagelse i de lokale priser.</p>
+      <span class="pill">130 m² · 18,1 MWh · inkl. moms og faste bidrag</span>
+    </div>
+    <div class="art" aria-hidden="true">
+      <svg viewBox="0 0 220 170" width="220" height="170">
+        <circle cx="140" cy="80" r="62" fill="#1d4f94"/>
+        <rect x="128" y="28" width="12" height="62" fill="#e6edf6"/><rect x="128" y="40" width="12" height="5" fill="#f6ad6e"/><rect x="128" y="52" width="12" height="5" fill="#f6ad6e"/>
+        <circle cx="148" cy="22" r="7" fill="#b9cde6"/><circle cx="160" cy="14" r="6" fill="#b9cde6"/><circle cx="172" cy="18" r="7" fill="#b9cde6"/>
+        <polygon points="30,92 70,78 70,140 30,140" fill="#6f9fd0"/><rect x="38" y="104" width="9" height="9" fill="#0b3a7e"/><rect x="53" y="104" width="9" height="9" fill="#0b3a7e"/>
+        <polygon points="70,92 110,74 110,140 70,140" fill="#f6ad6e"/><rect x="78" y="104" width="9" height="9" fill="#0b3a7e"/><rect x="93" y="104" width="9" height="9" fill="#0b3a7e"/>
+        <rect x="110" y="90" width="52" height="50" fill="#c9d8ec"/><rect x="118" y="102" width="9" height="9" fill="#0b3a7e"/><rect x="133" y="102" width="9" height="9" fill="#0b3a7e"/><rect x="148" y="102" width="9" height="9" fill="#0b3a7e"/>
+        <circle cx="90" cy="126" r="8" fill="#f6ad6e" stroke="#fff" stroke-width="1.5"/><path d="M91 120l-4 7h4l-2 6 5-8h-4z" fill="#fff"/>
+        <path d="M14 130h12v22h174v-22h12" fill="none" stroke="#f6ad6e" stroke-width="3"/><path d="M26 140h176" stroke="#b9cde6" stroke-width="1.5"/>
+      </svg>
+      <small>VARME PÅ TVÆRS AF ØSTJYLLAND</small>
+    </div>
+  </div>
+</div></header>
+
+<main><div class="wrap">
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="cmp">Sammenlign</button>
+    <button role="tab" aria-selected="false" data-tab="find">Find dit værk</button>
+    <button role="tab" aria-selected="false" data-tab="chg">Dyrere eller billigere?</button>
+  </nav>
+
+  <section id="cmp">
+    <div class="kicker">To værker. Et standardhus.</div>
+    <h2>Hvad betyder forskellen i kroner?</h2>
+    <p class="sub">Vælg to varmeværker, og se deres årsregninger side om side.</p>
+    <div class="pair">
+      <div class="card a"><label class="lab" for="selA">Varmeværk A</label><select id="selA"></select>
+        <div class="big" id="valA"></div><div class="meta" id="metaA"></div>
+        <div class="houserow"><svg width="48" height="48" viewBox="0 0 48 48"><path d="M4 24L24 6l20 18" fill="none" stroke="#0b3a7e" stroke-width="3"/><rect x="31" y="6" width="5" height="9" fill="#f6ad6e"/><rect x="10" y="22" width="28" height="22" fill="none" stroke="#0b3a7e" stroke-width="3"/><rect x="20" y="31" width="8" height="13" fill="#0b3a7e"/><path d="M25 18l-3 5h3l-1 4 4-6h-3z" fill="#f6ad6e"/></svg><div class="bartrack"><div class="bar" id="barA" style="background:var(--sky)"></div></div></div>
+      </div>
+      <div class="card"><label class="lab" for="selB">Varmeværk B</label><select id="selB"></select>
+        <div class="big" id="valB"></div><div class="meta" id="metaB"></div>
+        <div class="houserow"><svg width="48" height="48" viewBox="0 0 48 48"><path d="M4 24L24 6l20 18" fill="none" stroke="#0b3a7e" stroke-width="3"/><rect x="31" y="6" width="5" height="9" fill="#f6ad6e"/><rect x="10" y="22" width="28" height="22" fill="none" stroke="#0b3a7e" stroke-width="3"/><rect x="20" y="31" width="8" height="13" fill="#0b3a7e"/><path d="M25 18l-3 5h3l-1 4 4-6h-3z" fill="#f6ad6e"/></svg><div class="bartrack"><div class="bar" id="barB" style="background:var(--sky-l)"></div></div></div>
+      </div>
+    </div>
+    <div class="diff"><div class="l"><b>Forskellen på et år</b><span id="diffTxt"></span></div><div class="r"><strong id="diffKr"></strong><span id="diffPct"></span></div></div>
+    <div class="chips">
+      <button data-pair="max">Største prisforskel ↗</button>
+      <button data-pair="Hinnerup|Laurbjerg">Hinnerup vs. Laurbjerg</button>
+      <button data-pair="Kredsløb|Tranbjerg">Kredsløb vs. Tranbjerg</button>
+      <button data-pair="swap">⇄ Byt værker</button>
+    </div>
+  </section>
+  <details class="om"><summary>Om tallene</summary>
+    <p>Priserne er Forsyningstilsynets beregning af den samlede årlige regning for et standardhus på 130 m² med et forbrug på 18,1 MWh. Prisen er inkl. moms og faste bidrag. Det er ikke din præcise regning, for dit eget forbrug og husets størrelse påvirker, hvad du betaler.</p>
+    <p>Postnummeret i Forsyningstilsynets fil siger ikke, hvilken kommune værket ligger i, så redaktionen har fordelt værkerne på kommuner. For Nimtofte bruges takstområde 1.</p>
+  </details>
+
+  <section id="find" hidden>
+    <div class="kicker">Dit værk i det lokale prisbillede</div>
+    <h2>Hvor ligger dit varmeværk?</h2>
+    <p class="sub">Søg, vælg kommune, og tryk på et værk for at fremhæve det.</p>
+    <div class="filters3">
+      <div><label class="flab" for="kom">Kommune</label><select id="kom"></select></div>
+      <div><label class="flab" for="q">Find varmeværk</label><input type="search" id="q" placeholder="Fx Grenå, Kredsløb eller Hadsten"></div>
+      <div><label class="flab" for="srt">Sortering</label><select id="srt"><option value="lo">Laveste pris først</option><option value="hi">Højeste pris først</option><option value="az">Alfabetisk</option></select></div>
+    </div>
+    <div class="listhead"><span id="cntF"></span><span>Kr. om året · januar 2026</span></div>
+    <div id="list"></div>
+  </section>
+
+  <section id="chg" hidden>
+    <div class="kicker">Fra januar 2025 til januar 2026</div>
+    <h2>Gik din varmepris op eller ned?</h2>
+    <div class="filters3" style="margin-top:14px">
+      <div><label class="flab" for="kom2">Kommune</label><select id="kom2"></select></div>
+      <div><label class="flab" for="unit">Vis ændring i</label><select id="unit"><option value="kr">Kroner om året</option><option value="pct">Procent</option></select></div>
+      <div><label class="flab" for="srt2">Sortering</label><select id="srt2"><option value="up">Største stigning først</option><option value="down">Største fald først</option><option value="az">Alfabetisk</option></select></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--navy)"></i>Prisfald</span><span><i style="background:var(--orange)"></i>Prisstigning</span></div>
+    <div class="axislab">Fald ← 0 → Stigning</div>
+    <div id="dlist"></div>
+  </section>
+
+  <footer><div>Kilde: Forsyningstilsynets prisstatistik, januar 2026.<br><span id="cnt"></span> varmeværker i Aarhus, Favrskov, Syddjurs, Norddjurs, Randers og Skanderborg kommuner.</div><div>Samme hus. Samme forbrug. Forskellig pris.</div></footer>
+</div></main>
+
+<script>
+const D=[{"navn": "Grenå", "fuldt": "GRENÅ VARMEVÆRK A M B A", "kommune": "Norddjurs", "postnr": "8500", "pnr": "1017920967", "mwh": 390.0, "hus": 11706.0, "lejl": 8943.0, "d23": 1706.0, "p23": 17.1, "d25": 226.0, "p25": 2.0}, {"navn": "Hinnerup", "fuldt": "HINNERUP FJERNVARME AMBA", "kommune": "Favrskov", "postnr": "8382", "pnr": "1002895495", "mwh": 528.0, "hus": 13326.0, "lejl": 10243.0, "d23": 1184.0, "p23": 9.8, "d25": 0.0, "p25": 0.0}, {"navn": "Thorsø", "fuldt": "Thorsø Fjernvarmeværk A M B A", "kommune": "Favrskov", "postnr": "8881", "pnr": "1001552789", "mwh": 368.0, "hus": 13375.0, "lejl": 11588.0, "d23": -1214.0, "p23": -8.3, "d25": -70.0, "p25": -0.5}, {"navn": "Ry Varmeværk", "fuldt": "Rye Varmeværk ApS", "kommune": "Skanderborg", "postnr": "8680", "pnr": "1029969465", "mwh": 455.0, "hus": 13404.0, "lejl": 10286.0, "d23": null, "p23": null, "d25": -170.0, "p25": -1.3}, {"navn": "Skanderborg-Hørning", "fuldt": "Skanderborg-Hørning Fjernvarme Amba", "kommune": "Skanderborg", "postnr": "8660", "pnr": "1001761239", "mwh": 582.0, "hus": 13493.0, "lejl": 10862.0, "d23": 2307.0, "p23": 20.6, "d25": 0.0, "p25": 0.0}, {"navn": "Galten", "fuldt": "Galten Varmeværk A M B A", "kommune": "Skanderborg", "postnr": "8464", "pnr": "1001843381", "mwh": 450.0, "hus": 13613.0, "lejl": 11645.0, "d23": 3639.0, "p23": 36.5, "d25": 812.0, "p25": 6.3}, {"navn": "Verdo · Randers", "fuldt": "VERDO VARME A/S", "kommune": "Randers", "postnr": "8920", "pnr": "1007760007", "mwh": 703.0, "hus": 14541.0, "lejl": 11809.0, "d23": 458.0, "p23": 3.3, "d25": 2936.0, "p25": 25.3}, {"navn": "Ebeltoft", "fuldt": "EBELTOFT FJERNVARMEVÆRK", "kommune": "Syddjurs", "postnr": "8400", "pnr": "1003010765", "mwh": 553.0, "hus": 14566.0, "lejl": 11488.0, "d23": -1172.0, "p23": -7.4, "d25": 910.0, "p25": 6.7}, {"navn": "Ørsted", "fuldt": "Ørsted Fjernvarmeværk", "kommune": "Norddjurs", "postnr": "8950", "pnr": "1001596824", "mwh": 575.0, "hus": 15038.0, "lejl": 11297.0, "d23": 2354.0, "p23": 18.6, "d25": 2354.0, "p25": 18.6}, {"navn": "Hammel", "fuldt": "Hammel Fjernvarme Amba", "kommune": "Favrskov", "postnr": "8450", "pnr": "1001822672", "mwh": 593.0, "hus": 15859.0, "lejl": 12437.0, "d23": 774.0, "p23": 5.1, "d25": 1051.0, "p25": 7.1}, {"navn": "Kredsløb", "fuldt": "Kredsløb Fjernvarme A/S", "kommune": "Aarhus", "postnr": "8220", "pnr": "1025109704", "mwh": 667.0, "hus": 16229.0, "lejl": 12853.0, "d23": 3977.0, "p23": 32.5, "d25": 260.0, "p25": 1.6}, {"navn": "Auning", "fuldt": "Auning Varmeværk A M B A", "kommune": "Norddjurs", "postnr": "8963", "pnr": "1001583674", "mwh": 600.0, "hus": 16597.0, "lejl": 13156.0, "d23": -513.0, "p23": -3.0, "d25": 2060.0, "p25": 14.2}, {"navn": "Vivild", "fuldt": "Vivild Varmeværk A M B A", "kommune": "Norddjurs", "postnr": "8961", "pnr": "1002323664", "mwh": 787.0, "hus": 16698.0, "lejl": 14257.0, "d23": -2017.0, "p23": -10.8, "d25": -2017.0, "p25": -10.8}, {"navn": "Rundhøj", "fuldt": "Rundhøj  Fjernvarme AMBA", "kommune": "Aarhus", "postnr": "8270", "pnr": "1001930294", "mwh": 761.0, "hus": 17028.0, "lejl": 13318.0, "d23": 3280.0, "p23": 23.9, "d25": -1222.0, "p25": -6.7}, {"navn": "Rønde", "fuldt": "Rønde Fjernvarmeværk", "kommune": "Syddjurs", "postnr": "8410", "pnr": "1002824928", "mwh": 662.0, "hus": 17072.0, "lejl": 13437.0, "d23": 1640.0, "p23": 10.6, "d25": 0.0, "p25": 0.0}, {"navn": "Løgten-Skødstrup", "fuldt": "LØGTEN-SKØDSTRUP FJERNVARMEVÆRK A M B A", "kommune": "Aarhus", "postnr": "8541", "pnr": "1001552091", "mwh": 787.0, "hus": 17097.0, "lejl": 13831.0, "d23": 3842.0, "p23": 29.0, "d25": -407.0, "p25": -2.3}, {"navn": "Malling", "fuldt": "MALLING VARMEVÆRK AMBA", "kommune": "Aarhus", "postnr": "8340", "pnr": "1001745715", "mwh": 745.0, "hus": 17297.0, "lejl": 13612.0, "d23": 2511.0, "p23": 17.0, "d25": -2081.0, "p25": -10.7}, {"navn": "Thorsager", "fuldt": "THORSAGER FJERNVARMEVÆRK A M B A", "kommune": "Syddjurs", "postnr": "8410", "pnr": "1000409687", "mwh": 650.0, "hus": 17808.0, "lejl": 14212.0, "d23": 2504.0, "p23": 16.4, "d25": 1443.0, "p25": 8.8}, {"navn": "Hadsten", "fuldt": "Hadsten Varmeværk", "kommune": "Favrskov", "postnr": "8370", "pnr": "1002257575", "mwh": 737.0, "hus": 17848.0, "lejl": 14187.0, "d23": 5853.0, "p23": 48.8, "d25": 3200.0, "p25": 21.9}, {"navn": "Havndal", "fuldt": "Havndal Fjernvarme A.m.b.a.", "kommune": "Randers", "postnr": "8970", "pnr": "1001121158", "mwh": 579.0, "hus": 17911.0, "lejl": 14190.0, "d23": 2259.0, "p23": 14.4, "d25": -1.0, "p25": 0.0}, {"navn": "Trustrup-Lyngby", "fuldt": "TRUSTRUP-LYNGBY VARMEVÆRK AMBA", "kommune": "Norddjurs", "postnr": "8570", "pnr": "1004131281", "mwh": 736.0, "hus": 18239.0, "lejl": 14304.0, "d23": 4550.0, "p23": 33.2, "d25": 0.0, "p25": 0.0}, {"navn": "Ryomgård", "fuldt": "Ryomgård Fjernvarmeværk", "kommune": "Syddjurs", "postnr": "8550", "pnr": "1002070617", "mwh": 720.0, "hus": 18619.0, "lejl": 15337.0, "d23": 1954.0, "p23": 11.7, "d25": 0.0, "p25": 0.0}, {"navn": "Lystrup", "fuldt": "Lystrup Fjernvarme A m b a", "kommune": "Aarhus", "postnr": "8520", "pnr": "1001820693", "mwh": 825.0, "hus": 18751.0, "lejl": 15093.0, "d23": 3507.0, "p23": 23.0, "d25": -792.0, "p25": -4.1}, {"navn": "Gassum-Hvidsten", "fuldt": "Gassum-Hvidsten Kraftvarmeværk", "kommune": "Randers", "postnr": "8981", "pnr": "1001349413", "mwh": 580.0, "hus": 18823.0, "lejl": 15356.0, "d23": 1063.0, "p23": 6.0, "d25": 0.0, "p25": 0.0}, {"navn": "Langå", "fuldt": "Langå Varmeværk", "kommune": "Randers", "postnr": "8870", "pnr": "1001672967", "mwh": 705.0, "hus": 18995.0, "lejl": 14651.0, "d23": -2589.0, "p23": -12.0, "d25": 0.0, "p25": 0.0}, {"navn": "Gjerlev", "fuldt": "Gjerlev Fjernvarmeværk A.m.b.a.", "kommune": "Randers", "postnr": "8983", "pnr": "1000753087", "mwh": 625.0, "hus": 19137.0, "lejl": 15000.0, "d23": 3167.0, "p23": 19.8, "d25": -1.0, "p25": 0.0}, {"navn": "Holme-Lundshøj", "fuldt": "Holme-Lundshøj Fjernvarmeværk A M B A", "kommune": "Aarhus", "postnr": "8270", "pnr": "1001789264", "mwh": 913.0, "hus": 19338.0, "lejl": 15406.0, "d23": 4997.0, "p23": 34.9, "d25": 746.0, "p25": 4.0}, {"navn": "Mørke", "fuldt": "Mørke Fjernvarmeselskab Amba", "kommune": "Syddjurs", "postnr": "8544", "pnr": "1001735576", "mwh": 825.0, "hus": 19370.0, "lejl": 15781.0, "d23": 2603.0, "p23": 15.5, "d25": 1030.0, "p25": 5.6}, {"navn": "Allingåbro", "fuldt": "Allingåbro Varmeværk A M B A", "kommune": "Norddjurs", "postnr": "8961", "pnr": "1001414567", "mwh": 750.0, "hus": 19475.0, "lejl": 15462.0, "d23": 3620.0, "p23": 22.8, "d25": 0.0, "p25": 0.0}, {"navn": "Tranbjerg", "fuldt": "TRANBJERG VARMEVÆRK A M B A", "kommune": "Aarhus", "postnr": "8310", "pnr": "1001698824", "mwh": 921.0, "hus": 19549.0, "lejl": 16006.0, "d23": 4311.0, "p23": 28.3, "d25": 81.0, "p25": 0.4}, {"navn": "Kolind", "fuldt": "Kolind Fjernvarmeværk A.M.B.A", "kommune": "Syddjurs", "postnr": "8560", "pnr": "1017212040", "mwh": 715.0, "hus": 19679.0, "lejl": 15193.0, "d23": 1991.0, "p23": 11.3, "d25": 0.0, "p25": 0.0}, {"navn": "Hornslet", "fuldt": "Hornslet Fjernvarmeselskab Amba", "kommune": "Syddjurs", "postnr": "8543", "pnr": "1001839701", "mwh": 937.0, "hus": 20287.0, "lejl": 17122.0, "d23": 4786.0, "p23": 30.9, "d25": -1684.0, "p25": -7.7}, {"navn": "Mejlby", "fuldt": "Mejlby Fjernvarme AMBA", "kommune": "Randers", "postnr": "8870", "pnr": "1021057238", "mwh": 782.0, "hus": 22538.0, "lejl": 20112.0, "d23": -474.0, "p23": -2.1, "d25": -474.0, "p25": -2.1}, {"navn": "Nimtofte", "fuldt": "Nimtofte - NOFF takstområde 1", "kommune": "Syddjurs", "postnr": "8550", "pnr": "1013275528", "mwh": 715.0, "hus": 22904.0, "lejl": 17387.0, "d23": 2439.0, "p23": 11.9, "d25": 1992.0, "p25": 9.5}, {"navn": "Laurbjerg", "fuldt": "Laurbjerg Kraftvarmeværk AMBA", "kommune": "Favrskov", "postnr": "8870", "pnr": "1001032862", "mwh": 875.0, "hus": 22962.0, "lejl": 17500.0, "d23": -11313.0, "p23": -33.0, "d25": -1122.0, "p25": -4.7}, {"navn": "Mellerup", "fuldt": "Mellerup Fjernvarme Amba", "kommune": "Randers", "postnr": "8930", "pnr": "1001066162", "mwh": 913.0, "hus": 23766.0, "lejl": null, "d23": 2941.0, "p23": 14.1, "d25": 0.0, "p25": 0.0}, {"navn": "Værum-Ørum", "fuldt": "Værum-Ørum Kraftvarmeværk A.m.b.a.", "kommune": "Randers", "postnr": "8870", "pnr": "1003453013", "mwh": 906.0, "hus": 26478.0, "lejl": 21656.0, "d23": -875.0, "p23": -3.2, "d25": -875.0, "p25": -3.2}];
+const KOM=["Aarhus","Favrskov","Syddjurs","Norddjurs","Randers","Skanderborg"];
+const kr=v=>Math.round(v).toLocaleString("da-DK");
+const pct=v=>(v>0?"+":"")+v.toLocaleString("da-DK",{minimumFractionDigits:1,maximumFractionDigits:1})+" %";
+const byName=n=>D.find(d=>d.navn===n);
+const MAX=Math.max(...D.map(d=>d.hus)),MIN=Math.min(...D.map(d=>d.hus));
+const cheapest=D.find(d=>d.hus===MIN),dearest=D.find(d=>d.hus===MAX);
+document.getElementById("maxdiff").textContent=kr(MAX-MIN);document.getElementById("cnt").textContent=D.length;
+
+const selA=document.getElementById("selA"),selB=document.getElementById("selB");
+for(const s of[selA,selB]){for(const k of KOM){const g=document.createElement("optgroup");g.label=k;D.filter(d=>d.kommune===k).slice().sort((a,b)=>a.navn.localeCompare(b.navn,"da")).forEach(d=>g.append(new Option(d.navn==="Nimtofte"?"Nimtofte · NOFF, takstområde 1":d.navn,d.navn)));s.append(g)}}
+selA.value=cheapest.navn;selB.value=dearest.navn;
+function cmp(){
+  const a=byName(selA.value),b=byName(selB.value);
+  for(const[x,s]of[[a,"A"],[b,"B"]]){
+    document.getElementById("val"+s).innerHTML=kr(x.hus)+"<span>kr.</span>";
+    document.getElementById("meta"+s).textContent="om året · "+x.kommune;
+    const bar=document.getElementById("bar"+s);bar.style.width=(x.hus/MAX*100)+"%";bar.style.height=(14+x.hus/MAX*40)+"px";
+  }
+  const d=Math.abs(b.hus-a.hus);
+  if(d===0){diffTxt.textContent="De to værker koster det samme";diffKr.textContent="0 kr.";diffPct.textContent="";return}
+  const[hi,lo]=b.hus>a.hus?[b,a]:[a,b];
+  diffTxt.textContent=hi.navn+" er dyrere end "+lo.navn;
+  diffKr.textContent=kr(d)+" kr.";
+  diffPct.textContent=(d/lo.hus*100).toLocaleString("da-DK",{minimumFractionDigits:1,maximumFractionDigits:1})+" % højere pris for samme standardhus";
+  resize();
+}
+selA.onchange=selB.onchange=cmp;
+document.querySelectorAll("[data-pair]").forEach(b=>b.onclick=()=>{
+  const p=b.dataset.pair;
+  if(p==="swap")[selA.value,selB.value]=[selB.value,selA.value];
+  else if(p==="max"){selA.value=cheapest.navn;selB.value=dearest.navn}
+  else{const[x,y]=p.split("|");selA.value=x;selB.value=y}
+  cmp();
+});
+
+const fill=s=>{s.append(new Option("Alle seks kommuner",""));KOM.forEach(k=>s.append(new Option(k,k)))};
+const kom=document.getElementById("kom"),kom2=document.getElementById("kom2"),q=document.getElementById("q"),srt=document.getElementById("srt");
+fill(kom);fill(kom2);
+const label=d=>d.navn==="Nimtofte"?"Nimtofte · NOFF, takstområde 1":d.navn;
+const RANK=new Map(D.map((d,i)=>[d.navn,i+1]));
+const picked=new Set();
+function list(){
+  const t=q.value.trim().toLowerCase(),k=kom.value;
+  let rows=D.filter(d=>(!k||d.kommune===k)&&(!t||d.navn.toLowerCase().includes(t)||d.fuldt.toLowerCase().includes(t)));
+  rows=rows.slice().sort(srt.value==="hi"?(a,b)=>b.hus-a.hus:srt.value==="az"?(a,b)=>a.navn.localeCompare(b.navn,"da"):(a,b)=>a.hus-b.hus);
+  document.getElementById("cntF").textContent=rows.length+" af "+D.length+" værker";
+  const el=document.getElementById("list");
+  el.innerHTML=rows.map(d=>`<div class="frow${picked.has(d.navn)?" on":""}" data-n="${d.navn}" role="button" tabindex="0"><span class="rk">${RANK.get(d.navn)}</span><span class="nm"><b>${label(d)}</b><small>${d.kommune}</small></span><span class="tr"><i style="width:${d.hus/MAX*100}%"></i></span><span class="val">${kr(d.hus)}</span></div>`).join("")||'<div class="empty">Ingen værker matcher.</div>';
+  el.querySelectorAll(".frow").forEach(r=>r.onclick=r.onkeydown=e=>{if(e.type==="keydown"&&e.key!=="Enter")return;const n=r.dataset.n;picked.has(n)?picked.delete(n):picked.add(n);r.classList.toggle("on")});
+  resize();
+}
+q.oninput=kom.onchange=srt.onchange=list;
+
+const unit=document.getElementById("unit"),srt2=document.getElementById("srt2");
+function chg(){
+  const key=unit.value==="kr"?"d25":"p25",k=kom2.value;
+  const fmt=v=>unit.value==="kr"?(v>0?"+":"")+kr(v)+" kr.":pct(v);
+  let rows=D.filter(d=>d[key]!==null&&(!k||d.kommune===k));
+  rows=rows.slice().sort(srt2.value==="down"?(a,b)=>a[key]-b[key]:srt2.value==="az"?(a,b)=>a.navn.localeCompare(b.navn,"da"):(a,b)=>b[key]-a[key]);
+  const all=D.filter(d=>d[key]!==null).map(d=>d[key]);
+  const lo=Math.min(0,...all),hi=Math.max(0,...all),span=hi-lo||1,z=(-lo)/span*100;
+  document.getElementById("dlist").innerHTML=rows.map(d=>{const v=d[key],w=Math.abs(v)/span*100;
+    const st=v>=0?`left:${z}%;width:${w}%;background:var(--orange)`:`left:${z-w}%;width:${w}%;background:var(--navy)`;
+    return `<div class="crow"><span class="nm"><b>${label(d)}</b><small>${d.kommune}</small></span><span class="ax" style="--z:${z}%">${v?`<i style="${st}"></i>`:""}</span><span class="v">${fmt(v)}</span></div>`}).join("");
+  resize();
+}
+kom2.onchange=unit.onchange=srt2.onchange=chg;
+
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("[data-tab]").forEach(x=>x.setAttribute("aria-selected",x===b));
+  ["cmp","find","chg"].forEach(id=>document.getElementById(id).hidden=id!==b.dataset.tab);document.querySelector(".om").hidden=b.dataset.tab!=="cmp";resize();
+});
+function resize(){try{parent.postMessage({type:"varmepriser-height",height:document.documentElement.scrollHeight},"*")}catch(e){}}
+window.addEventListener("resize",resize);
+cmp();list();chg();
+</script>
+</body>
+</html>
